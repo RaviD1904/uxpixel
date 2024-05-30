@@ -75,10 +75,10 @@ const ImagePreview = () => {
 
   return (
     <div className="flex flex-col items-center mt-8">
-      <div className="relative w-full h-96 border border-gray-300 overflow-hidden mb-6">
+      <div className="relative w-full h-96 border border-gray-300 overflow-hidden mb-6" style={{borderRadius:"10px" ,boxShadow: "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px"}}>
         <div
           className="absolute inset-0 flex items-center justify-center" //if want lag in image add class transition-transform duration-200
-          style={{ transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`, }}
+          style={{ transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`, }} 
           onTouchStart={handleTouchStart}
           onMouseDown={handleMouseDown}
         >
