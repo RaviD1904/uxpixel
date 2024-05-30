@@ -30,6 +30,28 @@ const ImagePreview = () => {
     setLastMousePosition({ x: e.clientX, y: e.clientY });
   };
 
+  const handleTouchStart = (e) => {
+    if (e.touches.length !== 1) return;
+    const touch = e.touches[0];
+    setIsDragging(true);
+    setLastMousePosition({ x: touch.clientX, y: touch.clientY });
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging || e.touches.length !== 1) return;
+    const touch = e.touches[0];
+    const dx = touch.clientX - lastMousePosition.x;
+    const dy = touch.clientY - lastMousePosition.y;
+    setPosition((prev) => ({
+      x: prev.x + dx,
+      y: prev.y + dy,
+    }));
+    setLastMousePosition({ x: touch.clientX, y: touch.clientY });
+  };
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+  
   const zoomIn = () => {
     setScale((prev) => prev + 0.1);
   };
@@ -39,13 +61,16 @@ const ImagePreview = () => {
   };
 
   useEffect(() => {
-    const handleMouseUpWindow = () => setIsDragging(false);
-    window.addEventListener('mouseup', handleMouseUpWindow);
+    window.addEventListener('mouseup', handleMouseUp);
     window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchend', handleTouchEnd);
+    window.addEventListener('touchmove', handleTouchMove);
     return () => {
-      window.removeEventListener('mouseup', handleMouseUpWindow);
+      window.removeEventListener('mouseup', handleMouseUp);
       window.removeEventListener('mousemove', handleMouseMove);
-    }
+      window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('touchmove', handleTouchMove);
+    };
   }, [isDragging, lastMousePosition]);
 
   return (
@@ -54,7 +79,7 @@ const ImagePreview = () => {
         <div
           className="absolute inset-0 flex items-center justify-center" //if want lag in image add class transition-transform duration-200
           style={{ transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`, }}
-        
+          onTouchStart={handleTouchStart}
           onMouseDown={handleMouseDown}
         >
           <Image
