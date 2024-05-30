@@ -48,7 +48,7 @@ const ImagePreview = () => {
 
   return (
     <div className="flex flex-col items-center mt-8">
-      <div className="relative w-1/2 h-96 border border-gray-300 overflow-hidden mb-6">
+      <div className="relative w-full h-96 border border-gray-300 overflow-hidden mb-6">
         <div
           className="absolute inset-0 flex items-center justify-center transition-transform duration-200"
           style={{ transform: `scale(${scale})` }}
@@ -67,9 +67,9 @@ const ImagePreview = () => {
           height: '100%',
           objectFit: 'contain'
         }}/>
-          <div className="absolute text-white text-3xl font-bold bg-black bg-opacity-50 px-4 py-2">
+          {/* <div className="absolute text-white text-3xl font-bold bg-black bg-opacity-50 px-4 py-2">
             PREVIEW
-          </div>
+          </div> */}
         </div>
         {/* <div className="absolute top-2 left-1/2 transform -translate-x-1/2 bg-blue-800 text-white px-4 py-1 rounded-md">
           Width 12inch (30.48cm)
