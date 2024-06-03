@@ -1,6 +1,8 @@
 "use client";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
+import AnalogClock from './AnalogClock';
+
 
 const ImagePreview = () => {
   const [scale, setScale] = useState(1);
@@ -8,6 +10,7 @@ const ImagePreview = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [lastMousePosition, setLastMousePosition] = useState({ x: 0, y: 0 });
   const [imageSrc, setImageSrc] = useState('/preview.png');
+  const [shape, setShape] = useState('square');
 
   const imgRef = useRef(null);
 
@@ -65,7 +68,29 @@ const ImagePreview = () => {
     const file = e.target.files[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
+      // const img = new Image();
+      // img.onload = () => {
+      //   // alert(`${img.width},${img.height}`)
+      //   // console.log(img.width,img.height)
+      //   // setImageSize({ width: img.width, height: img.height });
+      //   setImageSrc(imageUrl);
+      // };
       setImageSrc(imageUrl);
+    }
+  };
+
+  const getShapeClass = () => {
+    switch (shape) {
+      case 'square':
+        return '';
+      case 'rounded-square':
+        return 'rounded-lg';
+      case 'circle':
+        return 'w-96 h-96 rounded-full';
+      case 'bean':
+        return 'rounded-full h-64 w-80';
+      default:
+        return '';
     }
   };
 
@@ -85,9 +110,9 @@ const ImagePreview = () => {
   return (
     <div className="flex flex-col items-center mt-8">
       <div
-        className="relative w-full h-96 border border-gray-300 overflow-hidden mb-6"
+        className={`relative w-full h-96 border border-gray-300 overflow-hidden mb-6 ${getShapeClass()}`}
         style={{
-          borderRadius: "10px",
+          // borderRadius: "10px",
           boxShadow:
             "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
         }}
@@ -106,21 +131,10 @@ const ImagePreview = () => {
             alt="Preview"
             layout="fill"
             objectFit="contain"
+            // className={`object-contain w-full h-full ${getShapeClass()}`}
             draggable={false}
-            // ref={imgRef}
-            // onMouseDown={handleMouseDown}
-            // style={{
-            //   position: "absolute",
-            //   top: position.y,
-            //   left: position.x,
-            //   transform: `scale(${scale})`,
-            //   cursor: "grab",
-            //   userSelect: "none",
-            //   width: "100%",
-            //   height: "100%",
-            //   objectFit: "contain",
-            // }}
           />
+          <AnalogClock shapeClass={getShapeClass()} />
           {/* <div className="absolute text-white text-3xl font-bold bg-black bg-opacity-50 px-4 py-2">
             PREVIEW
           </div> */}
@@ -154,7 +168,7 @@ const ImagePreview = () => {
           onChange={handleImageUpload}
           className="hidden"
           id="file-input"
-        />
+        />  
         <label
           htmlFor="file-input"
           className="bg-blue-500 text-white py-2 px-4 rounded-md cursor-pointer"
@@ -178,6 +192,20 @@ const ImagePreview = () => {
           Terms of Service
         </a>
         .
+      </div>
+      <div className="flex justify-center mb-6 space-x-4">
+        <button onClick={() => setShape('square')} className="bg-blue-500 text-white py-2 px-4 rounded-md">
+          Square
+        </button>
+        <button onClick={() => setShape('rounded-square')} className="bg-blue-500 text-white py-2 px-4 rounded-md">
+          Rounded Square
+        </button>
+        <button onClick={() => setShape('circle')} className="bg-blue-500 text-white py-2 px-4 rounded-md">
+          Circle
+        </button>
+        <button onClick={() => setShape('bean')} className="bg-blue-500 text-white py-2 px-4 rounded-md">
+          Bean
+        </button>
       </div>
     </div>
   );
